@@ -356,14 +356,14 @@ export default function Home() {
               marginBottom: 36,
               animation: "fadeUp 0.6s 0.3s both",
             }}>
-              CPA with 7+ years in fintech lending — building Python-based automation systems
+              CPA with 9+ years in fintech lending — building Python-based automation systems
               that compress month-end close from weeks to days, without sacrificing accounting rigor.
             </p>
             <div style={{
               display: "flex", gap: 12, flexWrap: "wrap" as const,
               animation: "fadeUp 0.6s 0.4s both",
             }}>
-              {["CPA Licensed", "7+ Years Fintech", "QuickBooks Online API", "KPMG Alumni"].map(c => (
+              {["CPA Licensed", "9+ Years Fintech", "QuickBooks Online API", "KPMG Alumni"].map(c => (
                 <span key={c} style={{
                   display: "flex", alignItems: "center", gap: 6,
                   background: "#fff", border: "1px solid #E8E6E0",
@@ -478,7 +478,7 @@ export default function Home() {
             {/* Bio card */}
             <div style={{ background: "#fff", border: "1px solid #E8E6E0", borderRadius: 16, padding: 32 }}>
               <p style={{ fontSize: 15, color: "#444", lineHeight: 1.8, marginBottom: 20 }}>
-                CPA with 7+ years of experience across audit, accounting, advisory, and financial
+                CPA with 9+ years of experience across audit, accounting, advisory, and financial
                 planning within fintech and professional services. I work at the intersection of
                 accounting execution, analytical modeling, and automation — building systems that
                 scale financial operations without scaling headcount.
