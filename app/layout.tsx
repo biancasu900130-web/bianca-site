@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Bianca Su, CPA — Finance Automation Portfolio",
   description:
-    "CPA building Python and QuickBooks Online automation for month-end close, reconciliation, journal entries, billing, and investor reporting.",
+    "CPA building AI-assisted QuickBooks Online automation for month-end close, reconciliation, journal entries, billing, and investor reporting.",
 };
 
 export default function RootLayout({
