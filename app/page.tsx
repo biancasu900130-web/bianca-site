@@ -122,6 +122,153 @@ const PROJECTS: Project[] = [
     ],
     tags: ["Loan write-offs", "FPI refunds", "Non-cash JEs", "Sequential numbering", "Python"],
   },
+  {
+    id: "work-hub",
+    status: "production",
+    title: "Work Hub — automation control center",
+    subtitle: "One dashboard that runs every finance automation on click",
+    description:
+      "A local web dashboard that turns every script below into a click-to-run module, organized by cadence — daily, weekly, monthly, and project work. Each module exposes its own inputs, streams live log output as it runs, surfaces headline results, and opens the output folder when finished. It's the layer that lets the finance function operate the automations without ever touching a terminal.",
+    highlights: [
+      "Modules are auto-discovered — adding a new automation is dropping in one file, with no rewiring",
+      "Long-running jobs stream output line-by-line into the UI instead of blocking silently",
+      "Results render as metrics, tables, and one-click downloads — no digging through folders",
+      "Credentials live entirely outside the synced workspace, never alongside the code",
+      "Organized Daily / Weekly / Monthly / Projects so every recurring task has an obvious home",
+    ],
+    metrics: [
+      { label: "Cadences", value: "4" },
+      { label: "Modules", value: "10+" },
+      { label: "Setup needed", value: "None" },
+    ],
+    tags: ["Streamlit", "Python", "Process orchestration", "Live log streaming"],
+  },
+  {
+    id: "saas-invoicing",
+    status: "production",
+    title: "SaaS usage billing engine",
+    subtitle: "Turns monthly usage data into client invoices, pushed to QBO",
+    description:
+      "Generates monthly invoices for a B2B SaaS product billed on usage. It reads each client's usage across multiple billable event types, applies that client's contracted per-unit rates, tiered monthly minimums, and negotiated discounts, then pushes finished invoices into QuickBooks Online as reviewable drafts. A companion analytics view tracks recurring-revenue trends across months.",
+    highlights: [
+      "Per-client rate cards live in one master config — pricing is data, not code",
+      "Monthly minimums are step functions anchored to each client's contract start date, with first-month proration",
+      "Every invoice is created as an unsent draft for human review before it goes out",
+      "Zero-activity clients are suppressed from the main view but still surfaced for audit",
+      "Cross-month analytics separate recurring revenue from one-off project fees",
+    ],
+    metrics: [
+      { label: "Billable event types", value: "6" },
+      { label: "Clients billed", value: "9+" },
+      { label: "QBO push", value: "Auto" },
+    ],
+    tags: ["Python", "QBO API", "Config-driven pricing", "OAuth2", "Streamlit"],
+  },
+  {
+    id: "investor-weekly",
+    status: "production",
+    title: "Investor weekly reporting automation",
+    subtitle: "Builds the weekly funding & position package from raw exports",
+    description:
+      "Produces the weekly investor reporting package from raw loan position and transaction exports. It scaffolds the week's folder structure, refreshes each report tab, appends the new daily time-series rows with their formulas, recalculates, and produces a final distribution-ready workbook — then drafts the funding-request email for review.",
+    highlights: [
+      "Drives Excel natively for the large workbooks rather than rebuilding them in Python — preserves formulas, named ranges, and formatting",
+      "Time-series tabs are extended by carrying prior-row formulas forward, with sum-check ranges kept in sync",
+      "A final pass converts cells that reference soon-to-be-dropped tabs into static values, then trims the working tabs",
+      "Built-in self-verification rules confirm row counts and that all balance checks net to zero",
+      "The outbound email is created as a draft only — never sent automatically",
+    ],
+    metrics: [
+      { label: "Cadence", value: "Weekly" },
+      { label: "Final workbook", value: "8 sheets" },
+      { label: "Email", value: "Draft only" },
+    ],
+    tags: ["Python", "Excel via AppleScript", "openpyxl", "Time-series", "Email draft"],
+  },
+  {
+    id: "investor-monthly-payable",
+    status: "production",
+    title: "Investor monthly payable reports",
+    subtitle: "Transforms monthly originals into entity-specific payable files",
+    description:
+      "Each month, converts the raw investor report files into the payable workbooks the fund administrator tracks — one per investing entity. It adds the supporting reference, repayment, and funding tabs, derives the extra position columns, and builds the entity-specific summary payable block including the prior-month rollforward, then drafts the reply email with the period's charge-off summary.",
+    highlights: [
+      "The entity split lives entirely in the summary formulas — the supporting data tabs are identical across entities",
+      "Charge-off figures are derived as the month-over-month delta of the investor-portion charge-off column",
+      "The prior-month payable balance rolls forward automatically into the current month's summary",
+      "Cross-workbook styles are copied attribute-by-attribute to avoid corrupting the file on save",
+      "The reply email is drafted as a reply-all to the standing thread — never sent automatically",
+    ],
+    metrics: [
+      { label: "Entities", value: "2" },
+      { label: "Cadence", value: "Monthly" },
+      { label: "Rollforward", value: "Auto" },
+    ],
+    tags: ["Python", "openpyxl", "Multi-entity", "Rollforward logic"],
+  },
+  {
+    id: "vendor-bill-uploader",
+    status: "production",
+    title: "Vendor bill automation",
+    subtitle: "Drop an invoice PDF → posted as a QBO bill with the PDF attached",
+    description:
+      "Takes a vendor invoice PDF, parses the amount, dates, and document number, infers the right GL account and class from how that vendor's bills were coded historically, then posts a Bill to QuickBooks Online through the accounting REST API and attaches the original PDF. A tiered vendor model keeps recurring vendors fully hands-off while new ones are learned on first use.",
+    highlights: [
+      "Three-tier vendor model: precise parsers for known vendors, learned mappings for repeat vendors, guided entry for new ones",
+      "New vendors are reviewed once, then their mapping is remembered for every future bill",
+      "GL account and class are inferred from the vendor's most recent prior bills",
+      "Duplicate document numbers are detected before posting to prevent double-entry",
+      "A bill-vs-expense rule routes recurring invoices to Bills and small one-offs to Expenses",
+    ],
+    metrics: [
+      { label: "Vendor tiers", value: "3" },
+      { label: "PDF → Bill", value: "Auto" },
+      { label: "GL inference", value: "From history" },
+    ],
+    tags: ["Intuit REST API", "OAuth2", "PDF parsing", "Idempotent posting", "Streamlit"],
+  },
+  {
+    id: "lms-export",
+    status: "production",
+    title: "Loan data export pipeline",
+    subtitle: "Pulls monthly loan interest & fee data from the LMS API",
+    description:
+      "Pulls period interest and fee activity from the loan management system's API each month and shapes it into the pivots needed for balance-sheet reconciliation. Because daily interest is accrued just-in-time rather than stored, the pipeline computes it per loan and sums it for the period, then enriches every loan with its funding source.",
+    highlights: [
+      "Filters tens of thousands of historical loans down to the few hundred active in the period before making any per-loan calls",
+      "Computes just-in-time interest accrual per loan from day-level data the transaction stream doesn't carry",
+      "Tuned concurrency with exponential backoff holds the API's rate limit at a ~0% failure rate",
+      "Each loan is joined to its funding source so output carries an investor dimension",
+      "Outputs portfolio pivots plus per-loan detail, archived by month",
+    ],
+    metrics: [
+      { label: "Interest", value: "JIT calc" },
+      { label: "API failures", value: "~0%" },
+      { label: "Cadence", value: "Monthly" },
+    ],
+    tags: ["Python", "REST API", "Rate-limit backoff", "pandas"],
+  },
+  {
+    id: "month-end-orchestration",
+    status: "development",
+    title: "Month-end close orchestration framework",
+    subtitle: "Drop in raw data → every close module runs end to end",
+    description:
+      "The framework that ties the individual tools into one close. The target workflow: drop raw bank, loan, and investor data into an input folder, run once, and every module — bank classification, repayment, revenue and funding cost, charge-off, loss provisions, accruals, intercompany, bank reconciliation, and consolidation — produces a standardized, validated journal-entry file ready to upload.",
+    highlights: [
+      "A shared module contract: inputs → working-paper calc → standardized JE CSV → validation → upload → tie-out",
+      "A common config layer holds the chart of accounts and account/entity mappings so modules stay consistent",
+      "Inputs can be pooled together; outputs are split by category for clean review",
+      "Multi-entity by design — intercompany and clearing accounts net out on consolidation",
+      "Each module is independently runnable and surfaced as its own dashboard page",
+    ],
+    metrics: [
+      { label: "Close phases", value: "8" },
+      { label: "Modules mapped", value: "12" },
+      { label: "Per module", value: "WP → JE" },
+    ],
+    tags: ["Pipeline architecture", "Multi-entity", "JE automation", "Validation-first"],
+  },
 ];
 
 const APPROACH = [
@@ -335,7 +482,7 @@ export default function Home() {
               Accounting expertise,<br />automated with <em style={{ color: "#2D5BE3" }}>precision</em>
             </h1>
             <p style={{ fontSize: 16, color: "#666", lineHeight: 1.8, maxWidth: 540, marginBottom: 16, animation: "fadeUp 0.6s 0.3s both" }}>
-              I'm a CPA who builds the automation tools my team actually uses — Python scripts that handle bank reconciliation, journal entry generation, and QuickBooks API uploads, so month-end close takes days instead of weeks.
+              I'm a CPA who builds the automation tools my team actually uses — Python scripts that handle bank reconciliation, journal-entry generation, usage billing, investor reporting, and QuickBooks API uploads, so month-end close takes days instead of weeks.
             </p>
             <p style={{ fontSize: 16, color: "#666", lineHeight: 1.8, maxWidth: 540, marginBottom: 36, animation: "fadeUp 0.6s 0.35s both" }}>
               9+ years in fintech lending. Background in Big 4 audit (KPMG), financial planning, and finance operations leadership across consumer lending products.
@@ -375,7 +522,7 @@ export default function Home() {
             {[
               { num: "~98%", label: "Bank reconciliation match rate" },
               { num: "15 → 3", label: "Days for month-end close" },
-              { num: "5", label: "Automation tools built" },
+              { num: "12", label: "Automation tools built" },
               { num: "10+", label: "Bank accounts automated" },
             ].map(s => (
               <div key={s.label} style={{
@@ -402,45 +549,6 @@ export default function Home() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 20 }}>
             {PROJECTS.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
-          </div>
-        </section>
-
-
-        {/* PIPELINE */}
-        <section id="pipeline" style={{ paddingTop: 40, paddingBottom: 80 }}>
-          <div style={{ marginBottom: 44 }}>
-            <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "#aaa", letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 10 }}>02.5 / Integration</p>
-            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(26px, 4vw, 40px)", color: "#1A1814", lineHeight: 1.15, marginBottom: 10 }}>
-              How the tools <em style={{ color: "#2D5BE3" }}>connect</em>
-            </h2>
-            <p style={{ fontSize: 15, color: "#777", maxWidth: 560, lineHeight: 1.7 }}>
-              The five tools form a complete month-end close pipeline — each output feeds the next step.
-            </p>
-          </div>
-
-          <div style={{ position: "relative" as const }}>
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
-              {[
-                { step: "01", tool: "Bank reconciliation", output: "Matched transactions + CC JE CSV", color: "#2D5BE3" },
-                { step: "02", tool: "Loan repayment JE automation", output: "QBO-ready JE Excel (cash payments)", color: "#1E7C52" },
-                { step: "03", tool: "Non-cash loan JE automation", output: "QBO-ready JE Excel (write-offs, FPI)", color: "#1E7C52" },
-                { step: "04", tool: "Consolidation JE generator", output: "QBO-ready JE Excel (intercompany)", color: "#B07D1A" },
-                { step: "05", tool: "QBO journal entry uploader", output: "Posted to QuickBooks Online ✓", color: "#1B3A6B" },
-              ].map((item, i) => (
-                <div key={item.step} style={{ display: "flex", alignItems: "stretch", gap: 0 }}>
-                  <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", width: 48, flexShrink: 0 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: "50%", background: item.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", fontFamily: "'DM Mono', monospace" }}>{item.step}</span>
-                    </div>
-                    {i < 4 && <div style={{ width: 2, flex: 1, background: "#E8E6E0", minHeight: 32 }} />}
-                  </div>
-                  <div style={{ background: "#fff", border: "1px solid #E8E6E0", borderRadius: 12, padding: "16px 20px", marginLeft: 16, marginBottom: i < 4 ? 8 : 0, flex: 1 }}>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: "#1A1814", marginBottom: 4 }}>{item.tool}</p>
-                    <p style={{ fontSize: 12, color: "#999", fontFamily: "'DM Mono', monospace" }}>Output → {item.output}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -561,9 +669,10 @@ export default function Home() {
                 <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
                   {[
                     { label: "Email", value: "bsuzhaoya@gmail.com", href: "mailto:bsuzhaoya@gmail.com" },
-                    { label: "Resume", value: "Download PDF ↗", href: "/resume.pdf" },
+                    { label: "Resume", value: "General / Automation ↗", href: "/resume-general.pdf" },
+                    { label: "Resume", value: "Accounting ↗", href: "/resume-accountant.pdf" },
                   ].map(item => (
-                    <a key={item.label} href={item.href} style={{
+                    <a key={item.href} href={item.href} style={{
                       display: "flex", alignItems: "center", gap: 12,
                       background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)",
                       borderRadius: 8, padding: "10px 16px", fontSize: 13, color: "#fff",
