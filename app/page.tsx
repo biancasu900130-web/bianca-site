@@ -34,7 +34,7 @@ const PROJECTS: Project[] = [
       { label: "Bank institutions", value: "4" },
       { label: "Bank accounts", value: "10+" },
     ],
-    tags: ["Python", "QBO API", "openpyxl", "SequenceMatcher", "OAuth2", "pandas"],
+    tags: ["AI-assisted", "QBO API", "Excel automation", "Fuzzy matching", "OAuth2", "Data wrangling"],
   },
   {
     id: "loan-repayment-je",
@@ -55,7 +55,7 @@ const PROJECTS: Project[] = [
       { label: "Rounding handling", value: "Auto" },
       { label: "Output", value: "QBO-ready" },
     ],
-    tags: ["Python", "Excel automation", "JE generation", "Waterfall logic", "openpyxl"],
+    tags: ["AI-assisted", "Excel automation", "JE generation", "Waterfall logic"],
   },
   {
     id: "qbo-uploader",
@@ -69,7 +69,7 @@ const PROJECTS: Project[] = [
       "Every journal entry is checked against existing QBO entries before upload to prevent duplicates",
       "Three output reports after every run: upload_success.csv, upload_duplicates.csv, upload_failed.csv",
       "Bank and cash accounts are locked from any rounding adjustments during the cleaning step",
-      "Runs via a double-click .command file on macOS — no Terminal or Python setup needed",
+      "Runs via a double-click .command file on macOS — no Terminal or coding setup needed",
       "Account names are matched exactly (case-sensitive) to prevent silent upload failures in QBO",
     ],
     metrics: [
@@ -77,7 +77,7 @@ const PROJECTS: Project[] = [
       { label: "Token refresh", value: "Auto" },
       { label: "Upload error rate", value: "~0%" },
     ],
-    tags: ["Intuit OAuth2", "REST API", "Duplicate detection", "macOS .command", "Python"],
+    tags: ["Intuit OAuth2", "REST API", "Duplicate detection", "macOS .command", "AI-assisted"],
   },
   {
     id: "consolidation-je",
@@ -99,7 +99,7 @@ const PROJECTS: Project[] = [
       { label: "Output tabs", value: "3" },
       { label: "JE numbering", value: "Auto" },
     ],
-    tags: ["Multi-entity consolidation", "Intercompany accounting", "QBO import", "openpyxl"],
+    tags: ["Multi-entity consolidation", "Intercompany accounting", "QBO import", "AI-assisted"],
   },
   {
     id: "noncash-je",
@@ -120,7 +120,7 @@ const PROJECTS: Project[] = [
       { label: "JE numbering", value: "Sequential" },
       { label: "Validation", value: "Pre-output" },
     ],
-    tags: ["Loan write-offs", "FPI refunds", "Non-cash JEs", "Sequential numbering", "Python"],
+    tags: ["Loan write-offs", "FPI refunds", "Non-cash JEs", "Sequential numbering", "AI-assisted"],
   },
   {
     id: "work-hub",
@@ -141,7 +141,7 @@ const PROJECTS: Project[] = [
       { label: "Modules", value: "10+" },
       { label: "Setup needed", value: "None" },
     ],
-    tags: ["Streamlit", "Python", "Process orchestration", "Live log streaming"],
+    tags: ["Streamlit", "AI-assisted", "Process orchestration", "Live log streaming"],
   },
   {
     id: "saas-invoicing",
@@ -162,7 +162,7 @@ const PROJECTS: Project[] = [
       { label: "Clients billed", value: "9+" },
       { label: "QBO push", value: "Auto" },
     ],
-    tags: ["Python", "QBO API", "Config-driven pricing", "OAuth2", "Streamlit"],
+    tags: ["AI-assisted", "QBO API", "Config-driven pricing", "OAuth2", "Streamlit"],
   },
   {
     id: "investor-weekly",
@@ -172,7 +172,7 @@ const PROJECTS: Project[] = [
     description:
       "Produces the weekly investor reporting package from raw loan position and transaction exports. It scaffolds the week's folder structure, refreshes each report tab, appends the new daily time-series rows with their formulas, recalculates, and produces a final distribution-ready workbook — then drafts the funding-request email for review.",
     highlights: [
-      "Drives Excel natively for the large workbooks rather than rebuilding them in Python — preserves formulas, named ranges, and formatting",
+      "Drives Excel natively for the large workbooks rather than rebuilding them from scratch — preserves formulas, named ranges, and formatting",
       "Time-series tabs are extended by carrying prior-row formulas forward, with sum-check ranges kept in sync",
       "A final pass converts cells that reference soon-to-be-dropped tabs into static values, then trims the working tabs",
       "Built-in self-verification rules confirm row counts and that all balance checks net to zero",
@@ -183,7 +183,7 @@ const PROJECTS: Project[] = [
       { label: "Final workbook", value: "8 sheets" },
       { label: "Email", value: "Draft only" },
     ],
-    tags: ["Python", "Excel via AppleScript", "openpyxl", "Time-series", "Email draft"],
+    tags: ["AI-assisted", "Excel via AppleScript", "Time-series", "Email draft"],
   },
   {
     id: "investor-monthly-payable",
@@ -204,7 +204,7 @@ const PROJECTS: Project[] = [
       { label: "Cadence", value: "Monthly" },
       { label: "Rollforward", value: "Auto" },
     ],
-    tags: ["Python", "openpyxl", "Multi-entity", "Rollforward logic"],
+    tags: ["AI-assisted", "Excel automation", "Multi-entity", "Rollforward logic"],
   },
   {
     id: "vendor-bill-uploader",
@@ -246,7 +246,7 @@ const PROJECTS: Project[] = [
       { label: "API failures", value: "~0%" },
       { label: "Cadence", value: "Monthly" },
     ],
-    tags: ["Python", "REST API", "Rate-limit backoff", "pandas"],
+    tags: ["AI-assisted", "REST API", "Rate-limit backoff", "Data wrangling"],
   },
   {
     id: "month-end-orchestration",
@@ -275,7 +275,7 @@ const APPROACH = [
   {
     num: "01",
     title: "Accounting logic first, code second",
-    body: "Every automation starts with understanding the accounting problem precisely — the rules, edge cases, and exception paths — before a single line of Python is written. The code is a translation of accounting judgment, not a replacement for it.",
+    body: "Every automation starts with understanding the accounting problem precisely — the rules, edge cases, and exception paths — before any automation is built. The tooling is a translation of accounting judgment, not a replacement for it.",
   },
   {
     num: "02",
@@ -285,7 +285,7 @@ const APPROACH = [
   {
     num: "03",
     title: "Built for accountants, not developers",
-    body: "Tools run via double-click .command files on macOS — no Terminal, no Python setup. Output files mirror input filenames. Exception cases are color-coded for immediate triage. The goal is automation that disappears into the existing workflow rather than creating a new one.",
+    body: "Tools run via double-click .command files on macOS — no Terminal, no setup. Output files mirror input filenames. Exception cases are color-coded for immediate triage. The goal is automation that disappears into the existing workflow rather than creating a new one.",
   },
 ];
 
@@ -482,7 +482,7 @@ export default function Home() {
               Accounting expertise,<br />automated with <em style={{ color: "#2D5BE3" }}>precision</em>
             </h1>
             <p style={{ fontSize: 16, color: "#666", lineHeight: 1.8, maxWidth: 540, marginBottom: 16, animation: "fadeUp 0.6s 0.3s both" }}>
-              I'm a CPA who builds the automation tools my team actually uses — Python scripts that handle bank reconciliation, journal-entry generation, usage billing, investor reporting, and QuickBooks API uploads, so month-end close takes days instead of weeks.
+              I'm a CPA who builds the automation tools my team actually uses — AI-assisted automations that handle bank reconciliation, journal-entry generation, usage billing, investor reporting, and QuickBooks API uploads, so month-end close takes days instead of weeks.
             </p>
             <p style={{ fontSize: 16, color: "#666", lineHeight: 1.8, maxWidth: 540, marginBottom: 36, animation: "fadeUp 0.6s 0.35s both" }}>
               9+ years in fintech lending. Background in Big 4 audit (KPMG), financial planning, and finance operations leadership across consumer lending products.
@@ -630,7 +630,7 @@ export default function Home() {
                 I'm a CPA with 9+ years of experience in fintech lending — spanning Big 4 audit at KPMG, financial planning, senior accounting, and Finance Manager for a consumer lending company.
               </p>
               <p style={{ fontSize: 15, color: "#444", lineHeight: 1.8, marginBottom: 24 }}>
-                I work at the intersection of accounting execution and automation — building Python tools that handle the repetitive parts of month-end close, so I can focus on the judgment-heavy work: cash management, investor due diligence support, and cross-functional finance leadership.
+                I work at the intersection of accounting execution and automation — building AI-assisted tools that handle the repetitive parts of month-end close, so I can focus on the judgment-heavy work: cash management, investor due diligence support, and cross-functional finance leadership.
               </p>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
                 {[
